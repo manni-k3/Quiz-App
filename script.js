@@ -60,6 +60,8 @@ let questions = [
 
 let rightQuestions = 0;
 let currentQuestion = 0;
+let audioSuccess = new Audio("audio/success.mp3");
+let audioError = new Audio("audio/fail.mp3");
 
 function init() {
   document.getElementById("all-questions").innerHTML = questions.length;
@@ -102,10 +104,12 @@ function answer(selection) {
 
   if (selectetQuestionNumber == question["right_answer"]) {
     document.getElementById(selection).classList.add("bg-success");
+    audioSuccess.play();
     rightQuestions++;
   } else {
     document.getElementById(selection).classList.add("bg-danger");
     document.getElementById(idOfRightAnswer).classList.add("bg-success");
+    audioError.play();
   }
   document.getElementById("next-button").disabled = false;
 }

@@ -48,8 +48,17 @@ let questions = [
     answer_4: "Eine Programmiersprache für Webentwicklung",
     right_answer: 4,
   },
+  {
+    question: "Was ist der Zweck von CSS?",
+    answer_1: "Daten zu speichern",
+    answer_2: "Die Struktur einer Webseite zu definieren",
+    answer_3: "Die Gestaltung einer Webseite zu definieren",
+    answer_4: "Die Interaktivität einer Webseite zu ermöglichen",
+    right_answer: 3,
+  },
 ];
 
+let rightQuestions = 0;
 let currentQuestion = 0;
 
 function init() {
@@ -59,13 +68,31 @@ function init() {
 }
 
 function showQuestion() {
-  let question = questions[currentQuestion];
+  if (currentQuestion >= questions.length) {
+    // Show end screen
+    document.getElementById("end-screen").style = "";
+    document.getElementById("question-body").style = "display: none";
 
-  document.getElementById("question_text").innerHTML = question["question"];
-  document.getElementById("answer_1").innerHTML = question["answer_1"];
-  document.getElementById("answer_2").innerHTML = question["answer_2"];
-  document.getElementById("answer_3").innerHTML = question["answer_3"];
-  document.getElementById("answer_4").innerHTML = question["answer_4"];
+    document.getElementById("total-questions").innerHTML = questions.length;
+    document.getElementById("score").innerHTML = rightQuestions;
+  } else {
+    // Show question
+    let percent = (currentQuestion + 1) / questions.length;
+
+    percent = Math.round(percent * 100);
+
+    document.getElementById("progress-bar").innerHTML = `${percent} %`;
+    document.getElementById("progress-bar").style.width = `${percent}%`;
+
+    let question = questions[currentQuestion];
+
+    document.getElementById("question-number").innerHTML = currentQuestion + 1;
+    document.getElementById("question_text").innerHTML = question["question"];
+    document.getElementById("answer_1").innerHTML = question["answer_1"];
+    document.getElementById("answer_2").innerHTML = question["answer_2"];
+    document.getElementById("answer_3").innerHTML = question["answer_3"];
+    document.getElementById("answer_4").innerHTML = question["answer_4"];
+  }
 }
 
 function answer(selection) {
@@ -75,6 +102,7 @@ function answer(selection) {
 
   if (selectetQuestionNumber == question["right_answer"]) {
     document.getElementById(selection).classList.add("bg-success");
+    rightQuestions++;
   } else {
     document.getElementById(selection).classList.add("bg-danger");
     document.getElementById(idOfRightAnswer).classList.add("bg-success");
@@ -100,4 +128,13 @@ function resetAnswerButtons() {
   document.getElementById("answer_3").classList.remove("bg-success");
   document.getElementById("answer_4").classList.remove("bg-danger");
   document.getElementById("answer_4").classList.remove("bg-success");
+}
+
+function restartGame() {
+  document.getElementById("question-body").style = "";
+  document.getElementById("end-screen").style = "display: none";
+
+  rightQuestions = 0;
+  currentQuestion = 0;
+  init();
 }

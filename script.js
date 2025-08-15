@@ -70,31 +70,16 @@ function init() {
 }
 
 function showQuestion() {
-  if (currentQuestion >= questions.length) {
-    // Show end screen
-    document.getElementById("end-screen").style = "";
-    document.getElementById("question-body").style = "display: none";
-
-    document.getElementById("total-questions").innerHTML = questions.length;
-    document.getElementById("score").innerHTML = rightQuestions;
+  if (gameIsOver()) {
+    showEndScreen();
   } else {
-    // Show question
-    let percent = (currentQuestion + 1) / questions.length;
-
-    percent = Math.round(percent * 100);
-
-    document.getElementById("progress-bar").innerHTML = `${percent} %`;
-    document.getElementById("progress-bar").style.width = `${percent}%`;
-
-    let question = questions[currentQuestion];
-
-    document.getElementById("question-number").innerHTML = currentQuestion + 1;
-    document.getElementById("question_text").innerHTML = question["question"];
-    document.getElementById("answer_1").innerHTML = question["answer_1"];
-    document.getElementById("answer_2").innerHTML = question["answer_2"];
-    document.getElementById("answer_3").innerHTML = question["answer_3"];
-    document.getElementById("answer_4").innerHTML = question["answer_4"];
+    updateProgressBar();
+    updateToNextQuestion();
   }
+}
+
+function gameIsOver() {
+  return currentQuestion >= questions.length;
 }
 
 function answer(selection) {
@@ -141,4 +126,32 @@ function restartGame() {
   rightQuestions = 0;
   currentQuestion = 0;
   init();
+}
+
+function showEndScreen() {
+  document.getElementById("end-screen").style = "";
+  document.getElementById("question-body").style = "display: none";
+
+  document.getElementById("total-questions").innerHTML = questions.length;
+  document.getElementById("score").innerHTML = rightQuestions;
+}
+
+function updateProgressBar() {
+  let percent = (currentQuestion + 1) / questions.length;
+
+  percent = Math.round(percent * 100);
+
+  document.getElementById("progress-bar").innerHTML = `${percent} %`;
+  document.getElementById("progress-bar").style.width = `${percent}%`;
+}
+
+function updateToNextQuestion() {
+  let question = questions[currentQuestion];
+
+  document.getElementById("question-number").innerHTML = currentQuestion + 1;
+  document.getElementById("question_text").innerHTML = question["question"];
+  document.getElementById("answer_1").innerHTML = question["answer_1"];
+  document.getElementById("answer_2").innerHTML = question["answer_2"];
+  document.getElementById("answer_3").innerHTML = question["answer_3"];
+  document.getElementById("answer_4").innerHTML = question["answer_4"];
 }
